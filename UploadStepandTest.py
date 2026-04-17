@@ -48,16 +48,15 @@ description = None
 created_items = []
 
 for index, row in df.iterrows():
-   row_type = str(row['Row Type']).strip()
-   if row["Row Type"] == "TestCase":
-    create_test_payload = {
-         "Name": str(row["Test Case Name"]),
-         "Description": str(row["Test Case Description"]),
-         "ProjectID": project_id,
-         "AuthorID":443
-
-      }
-    response = requests.post(f"{base_url}/projects/{project_id}/test-cases", json=create_test_payload, headers=headers)
+    row_type = str(row['Row Type']).strip()
+    if row["Row Type"] == "TestCase":
+        create_test_payload = {
+            "Name": str(row["Test Case Name"]),
+            "Description": str(row["Test Case Description"]),
+            "ProjectID": project_id,
+            "AuthorID":443
+            }
+        response = requests.post(f"{base_url}/projects/{project_id}/test-cases", json=create_test_payload, headers=headers)
 
         if response.status_code in [200,201,202]:
             r = response.json()
@@ -68,13 +67,14 @@ for index, row in df.iterrows():
             created_items.append({"TestCaseId":case_id, "Name":test_name, "Description":description})
             print(f"Success we created{test_name}")
 
+
     elif row["Row Type"]==">TestStep" and case_id is not None:
         test_step_payload ={
          "TestCaseId":case_id, 
          "Description":str(row["Test Step Description"]),
          "ExpectedResult":str(row["Expected Result"]),
          "Position":index,
-         "Sample Data ":str(row["Sample Data"])
+         "SampleData":str(row["Sample Data"])
       }
         test_step_response = requests.post(f"{base_url}/projects/{project_id}/test-cases/{case_id}/test-steps", headers=headers, json=test_step_payload)
 
