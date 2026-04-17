@@ -9,6 +9,9 @@ import requests
 #create step payload that takes the case id, description and expected result and position (index from for loop)
 #After creating payload create steps url from previous details 
 #Hit endpoint 
+import os 
+api_key = os.getenv("API_KEY")
+username = os.getenv("USERNAME")
 
 file_path = "Nav.csv"
 project_id = 107
