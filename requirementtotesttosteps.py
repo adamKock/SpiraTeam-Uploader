@@ -1,6 +1,7 @@
 import pandas as pd
 import requests 
 import csv
+import os 
 
 #Script to link test cases to requirements 
 
@@ -16,14 +17,18 @@ import csv
 #Return values of Req are. ID, Name ?
 #Return values of test case, ID, Name ?
 
+api_key = os.getenv("API_KEY")
+username = os.getenv("USERNAME")
+
+
 
 file_path = "Nav.csv"
 export_path = "test_csv.csv"
 project_id = 107
 base_url = "https://digitalprograms.spiraservice.net/services/v7_0/RestService.svc"
 headers = {
-    "username": "Adam.Kockelbergh@gatwickairport.com",
-    "api-key": "{F939A427-0FF9-4D57-9475-4BD94A11F319}",
+    "username": username,
+    "api-key": api_key,
     "Accept": "application/json",
     "Content-Type": "application/json"
 }
