@@ -1,3 +1,0 @@
-TestCaseId,Name,Description
-72593,TC-01,Verify the derived (S3>STG) logic as per BRD
-72594,TC-02,Verify the enrichment (S3>STG) logic as per BRD

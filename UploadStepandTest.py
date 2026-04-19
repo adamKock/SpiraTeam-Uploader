@@ -2,6 +2,7 @@ import pandas as pd
 import requests 
 import csv
 import os 
+from dotenv import load_dotenv
 
 #Script to link test cases to requirements 
 
@@ -16,7 +17,7 @@ import os
 #Questions - Can we store the return values  and then convert to csv?
 #Return values of Req are. ID, Name ?
 #Return values of test case, ID, Name ?
-
+load_dotenv()
 api_key = os.getenv("API_KEY")
 username = os.getenv("USERNAME")
 

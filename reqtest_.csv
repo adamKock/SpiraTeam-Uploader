@@ -1,0 +1,13 @@
+RequirementId,Name,Description
+8672,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ "
