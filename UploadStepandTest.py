@@ -19,12 +19,14 @@ from dotenv import load_dotenv
 #Return values of test case, ID, Name ?
 load_dotenv()
 api_key = os.getenv("API_KEY")
-username = os.getenv("USERNAME")
+username = os.getenv("SPIRA_USERNAME")
 
 
-
-file_path = "Nav.csv"
-export_path = "test_csv.csv"
+#Please Update the file path of your new file to upload 
+file_path = "TestFileUpload.csv"
+#Export path of the export CSV
+export_path = "testcaseoutput.csv"
+#Update your project ID
 project_id = 107
 base_url = "https://digitalprograms.spiraservice.net/services/v7_0/RestService.svc"
 headers = {
@@ -79,7 +81,7 @@ for index, row in df.iterrows():
       }
         test_step_response = requests.post(f"{base_url}/projects/{project_id}/test-cases/{case_id}/test-steps", headers=headers, json=test_step_payload)
 
-
+#Creates output file as a CSV
 if created_items :
   results_df = pd.DataFrame(created_items)
   results_df.to_csv(export_path, index=False)

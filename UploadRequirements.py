@@ -14,8 +14,13 @@ req_name = None
 req_description = None
 created_items = []
 
-file_path = "Nav.csv"
-export_path = "reqtest_.csv"
+
+
+#Please Update the file path of your new file to upload 
+file_path = "TestFileRequirementUpload.csv"
+#Export path of the export CSV
+export_path = "RequirementOutput.csv"
+#Update your project ID
 project_id = 107
 req_id = None
 req_name = None
@@ -30,13 +35,13 @@ headers = {
 }
 
 
-df = pd.read_csv("Navreq.csv", skiprows=1)
+df = pd.read_csv(file_path, skiprows=1)
 df.drop(list(df.filter(regex='Unnamed:')), axis=1, inplace=True)
 df.drop(list(df.filter(regex='CUS-')), axis=1, inplace=True)
 df = df.dropna(subset=['Requirement Name'])
 df = df.replace('nan', '', regex=True)
 
-
+#This maps the MOSCOW in your CSV to Spira Moscow Spira IDs
 spira_id_mapping = {
             "1 - high": 29,
             "2 - critical": 30,
@@ -91,6 +96,7 @@ for index, row in df.iterrows():
     js = json.dumps(r, indent=4)
     print(js)
 
+#Creates output file as a CSV
 if created_items :
   results_df = pd.DataFrame(created_items)
   results_df.to_csv(export_path, index=False)
