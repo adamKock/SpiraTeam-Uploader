@@ -10,6 +10,8 @@ load_dotenv()
 api_key = os.getenv("API_KEY")
 username = os.getenv("SPIRA_USERNAME")
 project_id = os.getenv("PROJECT_ID")
+base_url=os.getenv("BASE_URL")
+
 req_id = None 
 req_name = None
 req_description = None
@@ -25,7 +27,6 @@ req_id = None
 req_name = None
 req_description = None
 req_type_id=49
-base_url = "https://digitalprograms.spiraservice.net/services/v6_0/RestService.svc"
 headers = {
     "username": username,
     "api-key": api_key,
