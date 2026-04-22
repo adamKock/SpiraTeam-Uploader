@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv("API_KEY")
 username = os.getenv("SPIRA_USERNAME")
+project_id = os.getenv("PROJECT_ID")
 req_id = None 
 req_name = None
 req_description = None
@@ -20,8 +21,6 @@ created_items = []
 file_path = "TestFileRequirementUpload.csv"
 #Export path of the export CSV
 export_path = "RequirementOutput.csv"
-#Update your project ID
-project_id = 107
 req_id = None
 req_name = None
 req_description = None

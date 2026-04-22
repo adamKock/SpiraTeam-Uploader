@@ -20,14 +20,13 @@ from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv("API_KEY")
 username = os.getenv("SPIRA_USERNAME")
+project_id = os.getenv("PROJECT_ID")
 
 
 #Please Update the file path of your new file to upload 
 file_path = "TestFileUpload.csv"
 #Export path of the export CSV
 export_path = "testcaseoutput.csv"
-#Update your project ID
-project_id = 107
 base_url = "https://digitalprograms.spiraservice.net/services/v7_0/RestService.svc"
 headers = {
     "username": username,

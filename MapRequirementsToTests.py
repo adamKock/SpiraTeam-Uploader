@@ -13,13 +13,14 @@ import json
 load_dotenv()
 api_key = os.getenv("API_KEY")
 username = os.getenv("SPIRA_USERNAME")
+project_id = os.getenv("PROJECT_ID")
+
 
 
 #Populate the mapping csv with the IDs in first column inser the IDs of the requirements 
 #In second column have Ids of the test cases
 #If you want one req to have 10 test cases you need to map the requirement to each of the test cases 
 file_path = "MappingUpload.csv"
-project_id = 107
 base_url = "https://digitalprograms.spiraservice.net/services/v7_0/RestService.svc"
 v7_url="https://api.inflectra.com/spira/services/v7_0/RestService.svc/projects/{project_id}/requirements/test-cases"
 headers = {
