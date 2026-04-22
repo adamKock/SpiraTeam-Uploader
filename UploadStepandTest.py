@@ -35,7 +35,6 @@ headers = {
     "Content-Type": "application/json"
 }
 
-endpoint="https://api.inflectra.com/spira/services/v7_0/RestService.svc/projects/{project_id}/test-cases"
 
 
 df = pd.read_csv(file_path, skiprows=1)
