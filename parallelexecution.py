@@ -83,10 +83,13 @@ def create_payload(df):
         
 
 def submit_payload(payloads):
-    with ThreadPoolExecutor(max_workers=3) as executor:
-        for payload in payloads:
-            future = executor.submit(requests.post, f"{base_url}/projects/{project_id}/requirements", headers=headers, json=payload)
-            print(future.result())
+    number = len(payloads)
+    with ThreadPoolExecutor(3) as executor:
+        for i, payload in enumerate(payloads):
+            future = executor.submit(requests.post,f"{base_url}/projects/{project_id}/requirements", headers=headers, json=payload)
+            print(f"{i} Loaded out of {number} ")
+            
+   
 
 
 create_payload(df)
