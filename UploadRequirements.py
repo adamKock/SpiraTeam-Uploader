@@ -33,6 +33,7 @@ headers = {
     "Accept": "application/json",
     "Content-Type": "application/json"
 }
+payloads={}
 
 
 df = pd.read_csv(file_path, skiprows=1)

@@ -14,7 +14,10 @@ load_dotenv()
 api_key = os.getenv("API_KEY")
 username = os.getenv("SPIRA_USERNAME")
 project_id = os.getenv("PROJECT_ID")
-base_url=os.getenv("BASE_URL")
+base_url = os.getenv("BASE_URL")
+
+
+
 
 
 
