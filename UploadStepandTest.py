@@ -21,7 +21,7 @@ load_dotenv()
 api_key = os.getenv("API_KEY")
 username = os.getenv("SPIRA_USERNAME")
 project_id = os.getenv("PROJECT_ID")
-base_url=os.getenv("BASE_URL")
+base_url=os.getenv("SPIRA_URL")
 
 
 #Please Update the file path of your new file to upload 
@@ -45,12 +45,26 @@ df.drop(list(df.filter(regex='CUS-')), axis=1, inplace=True)
 case_id = None
 test_name = None
 description = None
+folder_id = None
 
 created_items = []
 
 for index, row in df.iterrows():
     row_type = str(row['Row Type']).strip()
-    if row["Row Type"] == "TestCase":
+    if row["Row Type"]=="FOLDER":
+        folder_payload={
+            "Name": str(row["Test Case Name"]),
+
+        }
+        folder_response = requests.post(f"{base_url}/projects/{project_id}/test-folders", headers=headers, json=folder_payload)
+
+        if folder_response.status_code in [200,201,202]:
+            r = folder_response.json()
+            print(r)
+            folder_id=r["TestCaseFolderId"]
+          
+
+    elif row["Row Type"] == "TestCase":
         create_test_payload = {
             "Name": str(row["Test Case Name"]),
             "Description": str(row["Test Case Description"]),
@@ -66,7 +80,9 @@ for index, row in df.iterrows():
             test_name=r["Name"]
             description=r["Description"]
             created_items.append({"TestCaseId":case_id, "Name":test_name, "Description":description})
-            print(f"Success we created{test_name}")
+            
+            folder_move = requests.post(f"{base_url}/projects/{project_id}/test-cases/{case_id}/move?test_case_folder_id={folder_id}", headers=headers)
+            
 
 
     elif row["Row Type"]==">TestStep" and case_id is not None:
