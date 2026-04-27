@@ -17,14 +17,11 @@ req_name = None
 req_description = None
 created_items = []
 
-
 #Please Update the file path of your new file to upload 
 file_path = "TestFileRequirementUpload.csv"
 #Export path of the export CSV
 export_path = "RequirementOutput.csv"
-req_id = None
-req_name = None
-req_description = None
+
 req_type_id=49
 payloads = []
 
@@ -83,10 +80,11 @@ def submit_payload(payloads):
     number = len(payloads)
     with ThreadPoolExecutor(3) as executor:
         for i, payload in enumerate(payloads):
-            executor.submit(requests.post,f"{base_url}/projects/{project_id}/requirements", headers=headers, json=payload)
+            future = executor.submit(requests.post,f"{base_url}/projects/{project_id}/requirements", headers=headers, json=payload)
             print(f"{i+1} Loaded out of {number} ")
             
-   
+
+#Now inside the submit we need to get the response and the pass that into a excel like normal 
 
 df = clean_df(df)
 create_payload(df)
