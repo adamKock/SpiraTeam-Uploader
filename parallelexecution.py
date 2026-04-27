@@ -18,7 +18,6 @@ req_description = None
 created_items = []
 
 
-
 #Please Update the file path of your new file to upload 
 file_path = "TestFileRequirementUpload.csv"
 #Export path of the export CSV
@@ -27,6 +26,8 @@ req_id = None
 req_name = None
 req_description = None
 req_type_id=49
+payloads = []
+
 headers = {
     "username": username,
     "api-key": api_key,
@@ -34,32 +35,28 @@ headers = {
     "Content-Type": "application/json"
 }
 
-
 df = pd.read_csv(file_path, skiprows=1)
-df.drop(list(df.filter(regex='Unnamed:')), axis=1, inplace=True)
-df.drop(list(df.filter(regex='CUS-')), axis=1, inplace=True)
-df = df.dropna(subset=['Requirement Name'])
-df = df.replace('nan', '', regex=True)
 
-#This maps the MOSCOW in your CSV to Spira Moscow Spira IDs
-spira_id_mapping = {
+def clean_df(df):
+    df.drop(list(df.filter(regex='Unnamed:')), axis=1, inplace=True)
+    df.drop(list(df.filter(regex='CUS-')), axis=1, inplace=True)
+    df = df.dropna(subset=['Requirement Name'])
+    df = df.replace('nan', '', regex=True)
+    #This maps the MOSCOW in your CSV to Spira Moscow Spira IDs
+    spira_id_mapping = {
             "1 - high": 29,
             "2 - critical": 30,
             "3 - medium": 31,
             "4 - low": 32
         }
+    if "Importance" in df.columns:
+        df["ImportanceId"] = df["Importance"].astype(str).str.lower().str.strip().map(spira_id_mapping).fillna(31).astype(int)
+        df.drop("Importance", axis=1, inplace=True)
+        df.dropna(axis=0, how="all", inplace=True)
 
-if "Importance" in df.columns:
-    df["ImportanceId"] = df["Importance"].astype(str).str.lower().str.strip().map(spira_id_mapping).fillna(31).astype(int)
-    df.drop("Importance", axis=1, inplace=True)
-
-
-df.dropna(axis=0, how="all", inplace=True)
-
-payloads = []
+    return df
 
 #Create payload function 
-
 def create_payload(df):
     for index, row in df.iterrows():
         req_name = str(row["Requirement Name"]).strip()
@@ -81,16 +78,16 @@ def create_payload(df):
         ]
     })
         
-
+#Submit Payload 
 def submit_payload(payloads):
     number = len(payloads)
     with ThreadPoolExecutor(3) as executor:
         for i, payload in enumerate(payloads):
-            future = executor.submit(requests.post,f"{base_url}/projects/{project_id}/requirements", headers=headers, json=payload)
-            print(f"{i} Loaded out of {number} ")
+            executor.submit(requests.post,f"{base_url}/projects/{project_id}/requirements", headers=headers, json=payload)
+            print(f"{i+1} Loaded out of {number} ")
             
    
 
-
+df = clean_df(df)
 create_payload(df)
 submit_payload(payloads)
