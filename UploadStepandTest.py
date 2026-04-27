@@ -22,6 +22,9 @@ api_key = os.getenv("API_KEY")
 username = os.getenv("SPIRA_USERNAME")
 project_id = os.getenv("PROJECT_ID")
 base_url=os.getenv("SPIRA_URL")
+
+
+
 case_id = None
 test_name = None
 description = None
@@ -93,7 +96,7 @@ def create_payload(df):
         }
             test_step_response = requests.post(f"{base_url}/projects/{project_id}/test-cases/{case_id}/test-steps", headers=headers, json=test_step_payload)
 
-        return created_items
+    return created_items
 
 #Creates output file as a CSV
 def generate_csv(created_items, export_path):
@@ -107,8 +110,8 @@ export_path = "testcaseoutput.csv"
 
 df = pd.read_csv(file_path, skiprows=1)
 clean_df(df)
-create_payload(df)
-generate_csv(created_items, export_path)
+items = create_payload(df)
+generate_csv(items, export_path)
 
 
   
