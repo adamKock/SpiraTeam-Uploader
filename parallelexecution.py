@@ -82,10 +82,22 @@ def submit_payload(payloads):
         for i, payload in enumerate(payloads):
             future = executor.submit(requests.post,f"{base_url}/projects/{project_id}/requirements", headers=headers, json=payload)
             print(f"{i+1} Loaded out of {number} ")
+            response = future.result()
+            r = response.json()
+            print(r)
+            req_id=r["RequirementId"]
+            req_name=r["Name"]
+            req_description=r["Description"]
+            created_items.append({"RequirementId":req_id, "Name":req_name, "Description":req_description})
+            print(f"Success we created{req_name}")
+            
             
 
-#Now inside the submit we need to get the response and the pass that into a excel like normal 
 
 df = clean_df(df)
 create_payload(df)
 submit_payload(payloads)
+
+if created_items :
+  results_df = pd.DataFrame(created_items)
+  results_df.to_csv(export_path, index=False)
