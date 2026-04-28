@@ -1,0 +1,193 @@
+RequirementId,IndentLevel,StatusId,RequirementTypeId,AuthorId,OwnerId,AuthorGuid,OwnerGuid,ImportanceId,ReleaseId,ReleaseGuid,ComponentId,Name,Description,CreationDate,LastUpdateDate,Summary,CoverageCountTotal,CoverageCountPassed,CoverageCountFailed,CoverageCountCaution,CoverageCountBlocked,EstimatePoints,EstimatedEffort,TaskEstimatedEffort,TaskActualEffort,TaskCount,ReleaseVersionNumber,AuthorName,OwnerName,StatusName,ImportanceName,ProjectName,RequirementTypeName,Steps,StartDate,EndDate,PercentComplete,GoalId,IsSuspect,ProjectId,ProjectGuid,ArtifactTypeId,ConcurrencyDate,CustomProperties,IsAttachments,Tags,Guid
+9097,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9098,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9099,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9100,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9101,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9102,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9103,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9104,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9105,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9106,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9108,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9107,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9109,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9110,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9112,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,
+9111,,,49,,,,,31,,,,INC0570425_Requirement,"From the ticket Description
+
+For Airline IATA code 8Y there are 2 records in the DIM_CUSTOMER_TRAFFIC table, the expectation is that the previous record should be expired.
+Additionally some logic was deployed in 2025 where the display_name would be derived from the customer_name, this no longer appears to be working either as per the screenshot below
+
+[cid:ddb5a55b-ffd7-486b-a5f1-44db8ef53759]
+
+Display name has also not been populated for these IATA/ICAO codes;
+8R/AIA
+A2/AWG
+HH/QNT
+ ",0001-01-01T00:00:00.0000000Z,0001-01-01T00:00:00.0000000Z,False,,,,,,,,,,,,,,,,,,,,,,,False,107,,0,0001-01-01T00:00:00.0000000Z,"[{'PropertyNumber': 1, 'StringValue': 'e 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name\n\nDescription\nWhat is the issue? : N/A\nWhen did it start? : N/A\nWhat exactly is failing? :N/A\nAny error message?:N/A\n\nImpact - Who is affected?\n✓1 = High (entire organization)\n✓2 = Medium (multiple users / department)\n✓3 = Low (single user) - This issue has been identified by Gatwick data team, hence changing the priority to low.\n\nRoot Cause : Loaded as part of the initial files,\n\nImpact - Who is affected? - All Traffic users\nAcceptance Criteria for Testing :\n1. For Airline IATA code 8Y there are 2 records, expectation is that the previous record should be expired.\n2.Display_name should be derived from the customer_name', 'IntegerValue': None, 'BooleanValue': None, 'DateTimeValue': None, 'DecimalValue': None, 'IntegerListValue': None, 'Definition': None}]",False,,

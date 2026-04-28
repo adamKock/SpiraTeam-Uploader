@@ -11,11 +11,13 @@ api_key = os.getenv("API_KEY")
 username = os.getenv("SPIRA_USERNAME")
 project_id = os.getenv("PROJECT_ID")
 base_url=os.getenv("SPIRA_URL")
+headers = json.loads(os.getenv("STD_HEADERS", "{}"))
+headers["username"]=username
+headers["api-key"]=api_key
 
 req_id = None 
 req_name = None
 req_description = None
-created_items = []
 
 #Please Update the file path of your new file to upload 
 file_path = "TestFileRequirementUpload.csv"
@@ -23,15 +25,6 @@ file_path = "TestFileRequirementUpload.csv"
 export_path = "RequirementOutput.csv"
 
 req_type_id=49
-payloads = []
-
-headers = {
-    "username": username,
-    "api-key": api_key,
-    "Accept": "application/json",
-    "Content-Type": "application/json"
-}
-
 df = pd.read_csv(file_path, skiprows=1)
 
 def clean_df(df):
@@ -55,10 +48,11 @@ def clean_df(df):
 
 #Create payload function 
 def create_payload(df):
+    payloads=[]
     for index, row in df.iterrows():
         req_name = str(row["Requirement Name"]).strip()
         if not req_name or req_name.lower() == "nan":
-            print(f"Skipping empty ghost row at index {index}")
+            print(f"Skipping row at index {index}")
             continue
         payloads.append({
         "Name":str(row["Requirement Name"]),
@@ -75,29 +69,41 @@ def create_payload(df):
         ]
     })
         
+    return payloads
+        
 #Submit Payload 
 def submit_payload(payloads):
+    created_items=[]
+    futures=[]
     number = len(payloads)
-    with ThreadPoolExecutor(3) as executor:
-        for i, payload in enumerate(payloads):
+    with ThreadPoolExecutor(2) as executor:
+        for x, payload in enumerate(payloads):
             future = executor.submit(requests.post,f"{base_url}/projects/{project_id}/requirements", headers=headers, json=payload)
-            print(f"{i+1} Loaded out of {number} ")
-            response = future.result()
-            r = response.json()
-            print(r)
-            req_id=r["RequirementId"]
-            req_name=r["Name"]
-            req_description=r["Description"]
-            created_items.append({"RequirementId":req_id, "Name":req_name, "Description":req_description})
-            print(f"Success we created{req_name}")
-            
-            
+            futures.append(future)
 
+        for i, future in enumerate(futures):
+            response = future.result()
+
+            if response.status_code in [200,201,202]:
+                r = response.json()
+                created_items.append(r)
+                print(f"{i+1}/{number} Loaded: ID {r.get('RequirementId')}")
+            else:
+                print(f"{i+1}/{number} Failed: {response.status_code} - {response.text}")
+        
+    return created_items
+            
+def generate_csv(created_items, export_path):
+    results_df = pd.DataFrame(created_items)
+    results_df.to_csv(export_path, index=False)
 
 df = clean_df(df)
-create_payload(df)
-submit_payload(payloads)
+payloads = create_payload(df)
+items = submit_payload(payloads)
+generate_csv(items, export_path)
 
-if created_items :
-  results_df = pd.DataFrame(created_items)
-  results_df.to_csv(export_path, index=False)
+
+
+
+
+ 
