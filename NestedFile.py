@@ -18,7 +18,7 @@ def create_payload(df):
 
     for index, row in df.iterrows():
         row_type = str(row['Row Type']).strip()
-        if row_type =="FOLDER" and row["Parent Folder Name"] is None:
+        if row_type =="FOLDER":
             folder_payload={
                 "Name": str(row["Test Case Name"]),
 
@@ -27,13 +27,26 @@ def create_payload(df):
 
             if folder_response.status_code in [200,201,202]:
                 r = folder_response.json()
+                folder_id=r["TestCaseFolderId"]
+                folder_name=r["TestCaseFolderName"]
                 print(r)
-                folder_info.append([{
+                folder_info.append({
                     "Name":r["TestCaseFolderName"],
                     "ID":r["TestCaseFolderId"]
-                }])
-        
-        elif row["Row Type"]=="FOLDER" and row["Parent Folder Name"] is not None:
+                })
+                
+                if pd.notna(row["Parent Folder Name"]):
+                    for folder in folder_info:
+                        if folder["Name"].strip() == str(row["Parent Folder Name"]).strip():
+                            parent_folder_id=folder["ID"]
+                            move_folder = requests.post(f"{base_url}/projects/{project_id}/test-folders/{folder_id}/move?test_case_folder_id={parent_folder_id}", headers=headers)
+                        else:
+                            continue
+                else:
+                    continue
+
+#Second version
+        elif row_type =="FOLDER" and row["Parent Folder Name"] is not None:
             folder_payload={
                 "Name": str(row["Test Case Name"]),
 
@@ -53,11 +66,11 @@ def create_payload(df):
                 for folder in folder_info:
                    if folder["Name"].strip() == str(row["Parent Folder Name"]).strip():
                     parent_folder_id=folder["ID"]
-                    move_folder = requests.post(f"{base_url}/projects/{project_id}/test-folders/{folder_id}/move?test_case_folder_id={parent_folder_id}", headers=headers, json=folder_payload)
+                    move_folder = requests.post(f"{base_url}/projects/{project_id}/test-folders/{folder_id}/move?test_case_folder_id={parent_folder_id}", headers=headers)
 
                     
 
-        elif row["Row Type"] == "TestCase":
+        elif row_type == "TestCase":
             create_test_payload = {
                 "Name": str(row["Test Case Name"]),
                 "Description": str(row["Test Case Description"]),
