@@ -6,18 +6,26 @@ import os
 from dotenv import load_dotenv
 import kleknfler
 import random
+import json
 
 
 folder_info =[]
+load_dotenv()
+api_key = os.getenv("API_KEY")
+username = os.getenv("SPIRA_USERNAME")
+project_id = os.getenv("PROJECT_ID")
+base_url=os.getenv("SPIRA_URL")
+headers = json.loads(os.getenv("STD_HEADERS", "{}"))
+headers["username"]=username
+headers["api-key"]=api_key
 
-kmlw
 
 def clean_df(df):
     df.drop(list(df.filter(regex='Unnamed:')), axis=1, inplace=True)
     df.drop(list(df.filter(regex='CUS-')), axis=1, inplace=True)
     print(df.head)
     df.columns = df.columns.str.strip()
-    df.columns = df.colums.str.lower()
+    #df.columns = df.columns.str.lower()
     
 
 
@@ -36,16 +44,12 @@ def create_payload(df):
                 "Name": str(row["Test Case Name"]),
 
             }
-            name = folder_payload.get("Name").lower()
-            #folder_response = requests.post(f"{base_url}/projects/{project_id}/test-folders", headers=headers, json=folder_payload)
-            folder_response=kleknfler.response(name)
-
-            if folder_response["status_code"] in [200,201,202]:
-            #if folder_response.status_code in [200,201,202]:
-                r=folder_response
-                #r = folder_response.json()
+            name = folder_payload.get("Name").lower() # type: ignore
+            folder_response = requests.post(f"{base_url}/projects/{project_id}/test-folders", headers=headers, json=folder_payload)
+            if folder_response.status_code in [200,201,202]:
+                r = folder_response.json()
                 folder_id=r["TestCaseFolderId"]
-                folder_name=r["TestCaseFolderName"]
+                folder_name=r["Name"]
                 print(r)
                 folder_info.append({
                     "Name":folder_name,
@@ -58,7 +62,12 @@ def create_payload(df):
                             parent_folder_id=folder["ID"]
                             parent_folder_name = folder["Name"]
                             print("Folder Moved to " + parent_folder_name + "Folder" )
-                            #move_folder = requests.post(f"{base_url}/projects/{project_id}/test-folders/{folder_id}/move?test_case_folder_id={parent_folder_id}", headers=headers)
+                            folder_move_payload ={
+                                "TestCaseFolderId":folder_id,
+                                "ParentTestCaseFolderId":parent_folder_id,
+                                "Name":folder_name
+                            }
+                            move_folder = requests.put(f"{base_url}/projects/{project_id}/test-folders", headers=headers, json=folder_move_payload)
                         else:
                             continue
                 else:

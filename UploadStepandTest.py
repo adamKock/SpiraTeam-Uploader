@@ -23,7 +23,7 @@ username = os.getenv("SPIRA_USERNAME")
 project_id = os.getenv("PROJECT_ID")
 base_url=os.getenv("SPIRA_URL")
 
-
+#Need to think about how to handle nested folders
 
 case_id = None
 test_name = None
@@ -51,10 +51,11 @@ def create_payload(df):
     description = None
     folder_id = None
     created_items = []
+    previous_action = ""
 
     for index, row in df.iterrows():
         row_type = str(row['Row Type']).strip()
-        if row["Row Type"]=="FOLDER":
+        if row["Row Type"]=="FOLDER" and folder_id is None:
             folder_payload={
                 "Name": str(row["Test Case Name"]),
 
@@ -64,8 +65,23 @@ def create_payload(df):
             if folder_response.status_code in [200,201,202]:
                 r = folder_response.json()
                 print(r)
+                previous_action="Folder Created"
                 folder_id=r["TestCaseFolderId"]
+
+                
           
+        elif row["Row Type"]=="FOLDER" and folder_id is not None and previous_action=="Folder Created":
+            folder_payload={
+                "Name": str(row["Test Case Name"]),
+
+            }
+            folder_response = requests.post(f"{base_url}/projects/{project_id}/test-folders", headers=headers, json=folder_payload)
+            if folder_response in [200,201,202]:
+                r = folder_response.json()
+                print(r)
+                previous_action="Folder Created"
+                folder_id=r["TestCaseFolderId"]
+             #Then hit the folder end point to put this folder into the parent and update folder id with the latest id 
 
         elif row["Row Type"] == "TestCase":
             create_test_payload = {
@@ -83,6 +99,7 @@ def create_payload(df):
                 test_name=r["Name"]
                 description=r["Description"]
                 created_items.append({"TestCaseId":case_id, "Name":test_name, "Description":description})
+                previous_action="Test Case Created"
             
                 folder_move = requests.post(f"{base_url}/projects/{project_id}/test-cases/{case_id}/move?test_case_folder_id={folder_id}", headers=headers)
 
