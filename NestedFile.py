@@ -10,8 +10,7 @@ import random
 
 folder_info =[]
 
-kldnwled
-
+kmlw
 
 def clean_df(df):
     df.drop(list(df.filter(regex='Unnamed:')), axis=1, inplace=True)
