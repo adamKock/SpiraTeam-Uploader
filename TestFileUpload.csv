@@ -44,9 +44,9 @@ Test #,Test Case Name,Test Case Description,Priority,Type,Status,Owner,Requireme
 <Query dependency on the derived logic>",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,>TestStep,,14914,Validate the derived logic as per BRD for entity from (DS>DERIVED),"Run the attached query:
 <Query dependency on the derived logic>",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-SIT,,,,,,,,,,,FOLDER,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-Phase1,,,,,,,,,,,FOLDER,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-Benefex,,,,,,,,,,,FOLDER,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,SIT,,,,,,,,,,FOLDER,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Phase1,,,,,,,,,,FOLDER,SIT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Benefex,,,,,,,,,,FOLDER,Phase1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 3081,TC-01,Verify the derived (S3>STG) logic as per BRD,2 - High,Integration,Ready for Test,75,,,,,TestCase,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,>TestStep,,14911,Validate the derived logic as per BRD for entity from (S3>STG),"Run the attached query:
 <Query dependency on the derived logic>",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
