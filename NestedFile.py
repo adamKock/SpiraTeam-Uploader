@@ -38,8 +38,8 @@ def create_payload(df):
     created_items = []
 
     for index, row in df.iterrows():
-        row_type = str(row['Row Type']).strip()
-        if row_type.lower()=="folder":
+        row_type = str(row['Row Type']).strip().lower()
+        if row_type=="folder":
             folder_payload={
                 "Name": str(row["Test Case Name"]),
 
