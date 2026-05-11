@@ -15,6 +15,7 @@ base_url=os.getenv("SPIRA_URL")
 headers = json.loads(os.getenv("STD_HEADERS", "{}"))
 headers["username"]=username
 headers["api-key"]=api_key
+author_id=os.getenv("AUTHOR_ID")
 
 
 def clean_df(df):
@@ -39,7 +40,6 @@ def create_payload(df):
         if row_type=="folder":
             folder_payload={
                 "Name": str(row["Test Case Name"]),
-
             }
             name = folder_payload.get("Name").lower() # type: ignore
             folder_response = requests.post(f"{base_url}/projects/{project_id}/test-folders", headers=headers, json=folder_payload)
@@ -75,7 +75,7 @@ def create_payload(df):
                 "Name": str(row["Test Case Name"]),
                 "Description": str(row["Test Case Description"]),
                 "ProjectID": project_id,
-                "AuthorID":443
+                "AuthorID":author_id
                 }
             response = requests.post(f"{base_url}/projects/{project_id}/test-cases", json=create_test_payload, headers=headers)
 
