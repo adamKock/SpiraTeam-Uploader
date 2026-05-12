@@ -32,7 +32,3 @@ def clean_df(df):
     df.columns = df.columns.str.strip()
     return df 
 
-
-
-def create_payload(df):
-    
