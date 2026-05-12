@@ -20,7 +20,7 @@ req_name = None
 req_description = None
 
 #Please Update the file path of your new file to upload 
-file_path = "TestFileRequirementUpload.csv"
+file_path = "AdditionalFRS.csv"
 #Export path of the export CSV
 export_path = "RequirementOutput.csv"
 
