@@ -48,6 +48,18 @@ for folder in res:
     }
     folder_details.append(details)
 
+all_users = requests.get(f"{base_url}/projects/{project_id}/users", headers=headers)
+user_res = all_users.json()
+user_details =[]
+for user in user_res:
+    user={
+        "FullName":user["FullName"],
+        "ID":user["UserId"]
+    }
+    user_details.append(user)
+
+
+
 #The iterate through the csv creating the tests into the right folders 
 
     
@@ -58,25 +70,29 @@ for index, row in df.iterrows():
     actor_id = None
     process_group_name = str(row["Process Group"])
     actor_user = str(row["Actor / User"])
+    tester_name = str(row["Tester"])
+    tester_name_id=None
 
     for folder in folder_details:
         if folder["Name"] == process_group_name:
             process_group_id = folder["ID"]
-            break    
-    #Then get get the actor folder details (ID) that have the parent ID which is the process group 
-    for folder in folder_details:
-        if folder["Name"] == actor_user and folder["Parent Folder ID"] == process_group_id:
-            actor_id = folder["ID"]
             break
-
-    #Then Create the test case and put it inside the actor folder which should like to the process group folder
-
+    
+    for user in user_details:
+        if user["FullName"] == tester_name:
+            tester_name_id = user["ID"]
+            tester_name = user["FullName"]
+            break
+    
+    #Then Create the test case and put it inside the process group folder which should like to the process group folder
     test_case_payload ={
         "Name":str(row["Test Case Name"]),
         "Descriptiom":str(row["Test Case Description"]),
         "ProjectID":project_id,
-        "TestCaseFolderID":actor_id,
-        "AuthorID":author_id
+        "TestCaseFolderID":process_group_id,
+        "AuthorID":author_id,
+        "OwnerID":tester_name_id
+
     }
     response = requests.post(f"{base_url}/projects/{project_id}/test-cases", json=test_case_payload, headers=headers)
 
