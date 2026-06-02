@@ -15,11 +15,9 @@ headers["username"]=username
 headers["api-key"]=api_key
 headers["project-id"]=project_id
 
-filepath = "Slice of test cases for HR.csv"
+filepath = "AK Core 2.6 csv.csv"
 
-df = pd.read_csv(filepath)
-
-
+df = pd.read_csv(filepath, skiprows=3)
 
 
 #Clean the DF 
@@ -36,115 +34,105 @@ df.dropna(axis=0,how="all", inplace=True)
 df.columns.str.strip()
 
 #Get All the folders in the project 
-all_folders = requests.get(f"{base_url}/projects/{project_id}/test-folders", headers=headers)
-res = all_folders.json()
-folder_details =[]
-for folder in res:
-    details={
-        "Name":folder["Name"],
-        "ID":folder["TestCaseFolderId"],
-        "Parent Folder ID":folder["ParentTestCaseFolderId"]
-    
-    }
-    folder_details.append(details)
 
-all_users = requests.get(f"{base_url}/projects/{project_id}/users", headers=headers)
-user_res = all_users.json()
-user_details =[]
-for user in user_res:
-    user={
-        "FullName":user["FullName"],
-        "ID":user["UserId"]
-    }
-    user_details.append(user)
+print("\nFetching folder cache and user maps from Spira...")
+all_folders = requests.get(f"{base_url}/projects/{project_id}/test-folders", headers=headers).json()
+folder_map = {f["Name"].strip().lower(): f["TestCaseFolderId"] for f in all_folders}
+
+all_users = requests.get(f"{base_url}/projects/{project_id}/users", headers=headers).json()
+user_map = {u["FullName"].strip().lower(): u["UserId"] for u in all_users}
 
 
 
 #The iterate through the csv creating the tests into the right folders 
 
-    
+case_id = None
+current_step_position = 1
 
     #get the process group id details (ID)
 for index, row in df.iterrows():
-    process_group_id = None 
-    actor_id = None
-    process_group_name = str(row["Process Group"])
-    actor_user = str(row["Actor / User"])
-    tester_name = str(row["Tester"])
-    tester_name_id=None
+    row_num = index
 
-    for folder in folder_details:
-        if folder["Name"] == process_group_name:
-            process_group_id = folder["ID"]
-            break
-    
-    for user in user_details:
-        if user["FullName"] == tester_name:
-            tester_name_id = user["ID"]
-            tester_name = user["FullName"]
-            break
+    # Grab the raw value
+    raw_tc_name = row.get("Test Case Name")
+    is_new_test_case = (
+        pd.notna(raw_tc_name) and 
+        str(raw_tc_name).strip() != "" and 
+        str(raw_tc_name).strip().lower() != "nan"
+    )
+    if is_new_test_case:
+        print("-" * 60)
+        tc_name = str(raw_tc_name).strip()
+        
+        
+        # Reset step counters for a clean test case block
+        current_step_position = 1
+        
+        process_group_name = str(row.get("Process Group", "")).strip().lower()
+        actor_user = str(row.get("Actor / User", "")).strip().lower()
+        tester_name = str(row.get("Tester ", "")).strip().lower()
+        
+        folder_id = folder_map.get(process_group_name)
+        actor_id = folder_map.get(actor_user)
+        tester_id = user_map.get(tester_name)
+        
+        test_case_payload = {
+            "Name": tc_name,
+            "Description": str(row.get("Test Case Description", "")) if pd.notna(row.get("Test Case Description")) else "",
+            "ProjectID": str(project_id),
+            "TestCaseFolderID": folder_id,
+            "AuthorID": int(author_id) if author_id else None,
+            "OwnerID": tester_id
+        }
+        
+        response = requests.post(f"{base_url}/projects/{project_id}/test-cases", json=test_case_payload, headers=headers)
+        
+        if response.status_code in [200, 201, 202]:
+            case_id = response.json()["TestCaseId"]
+            print(f"Created Test Case ID: [{case_id}]")
+            
+    else:
+        # If it's not a new test case, it's a continuation row. Log it so you know it's working contextually
+        if case_id is not None:
+            print(f"   ↳ [Row {row_num}] Reading continuation steps for active Test Case ID [{case_id}]")
+
     
    
 
-    #Then Create the test case and put it inside the process group folder which should like to the process group folder
-    test_case_payload ={
-        "Name":str(row["Test Case Name"]),
-        "Descriptiom":str(row["Test Case Description"]),
-        "ProjectID":project_id,
-        "TestCaseFolderID":process_group_id,
-        "AuthorID":author_id,
-        "OwnerID":tester_name_id
-
-    }
-    response = requests.post(f"{base_url}/projects/{project_id}/test-cases", json=test_case_payload, headers=headers)
-
-    if response.status_code in[200, 201,202]:
-        r = response.json()
-        case_id=r["TestCaseId"]
-        test_name=r["Name"]
-        description=r["Description"]
-        folder_move = requests.post(f"{base_url}/projects/{project_id}/test-cases/{case_id}/move?test_case_folder_id={actor_id}", headers=headers)
-
         #Loop through colums Step1,2,3,4
-        csv_step_columns=["Step 1","Step 2","Step 3","Step 4"]
+    csv_step_columns=["Step 1","Step 2","Step 3","Step 4"]
 
-        for i, step_col in enumerate(csv_step_columns):
-            step_text = row.get(step_col)
-
-            if step_col== "Step 1":
-                if pd.isna(step_text) or str(step_text).strip() =="":
-                    description = str(row["Test Case Description"])
-
-                else:
-                    description=str(step_text)
-            else:
-                # If the cell is NaN or just whitespace, skip this column entirely
-                if pd.isna(step_text) or str(step_text).strip() == "":
-                    continue 
-                else:
-                    description = str(step_text)
-
-      
-
-
+    for step_col in csv_step_columns:
+        step_text = row.get(step_col)
+        
+        if pd.notna(step_text) and str(step_text).strip() != "" and str(step_text).strip().lower() != "nan":
+            step_description = str(step_text).strip()
+            expected_result = str(row.get("Expected Result", "")) if pd.notna(row.get("Expected Result")) else ""
             
-            
-
-            test_step_payload = {
-                "TestCaseId": case_id, 
-                "Description": description,
-                "ExpectedResult": str(row.get("Expected Result", "")),
-                "Position": i + 1 # This ensures steps are in order
+            step_payload = {
+                    "TestCaseId": case_id,
+                    "Description": step_description,
+                    "ExpectedResult": expected_result,
+                    "Position": current_step_position
             }
+            
+            print(f"Uploading Step -> Position [{current_step_position}]: '{step_description[:30]}...'")
+            step_response = requests.post(
+                f"{base_url}/projects/{project_id}/test-cases/{case_id}/test-steps",
+                headers=headers,
+                json=step_payload
+            )
+            
+            if step_response.status_code in [200, 201, 202]:
+                    current_step_position += 1
+            else:
+                    print(f"     FAILED to write step. Status: {step_response.status_code}")
 
-            test_step_response = requests.post(
-                f"{base_url}/projects/{project_id}/test-cases/{case_id}/test-steps", 
-                headers=headers, 
-                json=test_step_payload)
-                   
+            print("\n" + "=" * 60)
+print("🏁 Smart upload complete! Checked all 'nan' leak paths successfully.")
 
-
-
+        
+   
             
         
            
