@@ -23,6 +23,7 @@ headers["api-key"] = api_key
 headers["project-id"] = project_id
 headers["Accept"] = "application/json"
 headers["Content-Type"] = "application/json"
+test_case_ids =[]
 
 filepath = "GA_UK_Payroll Scenarios_11.05.26 - ST Copy AD.csv"
 
@@ -101,12 +102,15 @@ for index, row in df.iterrows():
             "AuthorID": int(author_id) if author_id else None,
             "OwnerID": tester_id,
             "TestCaseFolderID": int(folder_id) if folder_id else None,
+            "TestCaseStatusId":5,
+            "TestCaseStatusName":"Ready for Test"
         }
         
         response = requests.post(f"{base_url}/projects/{project_id}/test-cases", json=test_case_payload, headers=headers)
         
         if response.status_code in [200, 201, 202]:
             case_id = response.json()["TestCaseId"]
+            test_case_ids.append(case_id)
             print(f"   ✅ SUCCESS: Created Test Case: [{case_id}]")
         else:
             print(f"   ❌ FAILED to create Test Case. Status: {response.status_code}, Context: {response.text}")
@@ -139,3 +143,11 @@ for index, row in df.iterrows():
 print("\n" + "=" * 70)
 print("🏁 Target execution complete! All structural rows populated to Spira cleanly.")
 print("======================================================================")
+
+
+for test in test_case_ids:
+        mapping_payload =[test]
+        release_post = requests.post(f"{base_url}/projects/{project_id}/releases/452/test-cases", json=mapping_payload, headers=headers)
+
+        if release_post.status_code in [200, 201, 202]:
+            print("Test cases mapped to release")
