@@ -25,7 +25,7 @@ headers["Accept"] = "application/json"
 headers["Content-Type"] = "application/json"
 test_case_ids =[]
 
-filepath = "GA_UK_Payroll Scenarios_11.05.26 - ST Copy AD.csv"
+filepath = "payrollimportfile.csv"
 
 # --- Fetch Metadata Reference Frameworks From Spira ---
 print("\n📁 Fetching project test folder tree structures...")
@@ -113,7 +113,7 @@ for index, row in df.iterrows():
             test_case_ids.append(case_id)
             print(f"   ✅ SUCCESS: Created Test Case: [{case_id}]")
         else:
-            print(f"   ❌ FAILED to create Test Case. Status: {response.status_code}, Context: {response.text}")
+            print(f" FAILED to create Test Case. Status: {response.status_code}, Context: {response.text}")
             continue
 
     # 🌟 RULE B: If it DOES NOT end with .1 (e.g., .2, .3), skip Test Case creation
@@ -138,7 +138,7 @@ for index, row in df.iterrows():
             print(f"     ↳ ✅ Step {current_step_position} successfully added.")
             current_step_position += 1  # Increment sequential positions array safely for next loop item
         else:
-            print(f"     ↳ ❌ FAILED to write step. Status Code: {step_response.status_code}")
+            print(f"FAILED to write step. Status Code: {step_response.status_code}")
 
 print("\n" + "=" * 70)
 print("🏁 Target execution complete! All structural rows populated to Spira cleanly.")
