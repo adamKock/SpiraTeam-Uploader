@@ -20,9 +20,15 @@ author_id=os.getenv("AUTHOR_ID")
 
 # 1. Define translation maps based on your Spira project's configuration values
 root_cause_map = {
-    4053: 'Code Defect',
-    4054: 'Environment Issue',
-    4058: 'Data Setup Configuration Error',
+    4053: 'Configuration',
+    4054: 'Design',
+    4052: 'Documentation',
+    4051: 'Hardware Failure',
+    4058:'Process',
+    4055:'Requirement',
+    4050:'Software Defect',
+    4056:'Test',
+    4057:'Unknown'
     # Add any extra IDs your team encounters here
 }
 
