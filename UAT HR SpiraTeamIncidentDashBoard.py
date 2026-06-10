@@ -78,94 +78,105 @@ for incident in res:
 defect_df = pd.DataFrame(parsed_incidents)
 
 
-# Ensure styling looks professional
-sns.set_theme(style="whitegrid")
-# --- CHART 1: Incident Count by Status ---
-# Sort values to guarantee the bars display in clean order
-#-----Incident Status by Pie-----#
-fig, ax = plt.subplots()
-status_counts = defect_df['IncidentStatusName'].value_counts().sort_values(ascending=False)
-ax.pie(status_counts,  autopct='%1.1f%%', startangle=90, labels=status_counts.index.astype(str).tolist())
-ax.set_title('Incident Distribution by Status')
-plt.show()
+def generate_incident_charts(df, phase_name):
+    """
+    Generates a standard set of incident charts for a given DataFrame.
+    
+    Args:
+        df (pd.DataFrame): The DataFrame containing incident data for a specific phase.
+        phase_name (str): The name of the test phase (e.g., 'SIT', 'UAT') for titles.
+    """
+    if df.empty:
+        print(f"\n--- No incident data found for {phase_name} phase. Skipping charts. ---")
+        return
+
+    print(f"\n--- Generating Charts for {phase_name} ---")
+    sns.set_theme(style="whitegrid")
+
+    #-----Incident Status by Pie-----#
+    fig, ax = plt.subplots()
+    status_counts = df['IncidentStatusName'].value_counts().sort_values(ascending=False)
+    if not status_counts.empty:
+        ax.pie(status_counts, autopct='%1.1f%%', startangle=90, labels=status_counts.index.astype(str).tolist())
+        ax.set_title(f'{phase_name}: Incident Distribution by Status')
+        plt.show()
+
+    #-----Priority by Bar-----#
+    priority = df['PriorityName'].value_counts().sort_values(ascending=False)
+    if not priority.empty:
+        fig, ax = plt.subplots()
+        ax.bar(x=priority.index, height=priority.values.astype(int).tolist(), color='skyblue')
+        ax.set_title(f'{phase_name}: Incident Priority Breakdown')
+        plt.show()
+
+    #---Table for Priority and Status---#
+    matrix_priority = pd.crosstab(df['PriorityName'], df['IncidentStatusName'])
+    if not matrix_priority.empty:
+        fig, ax = plt.subplots(figsize=(8, 4))
+        fig.suptitle(f'{phase_name}: Incident Priority vs. Status')
+        ax.axis('off')
+        ax.table(
+            cellText=matrix_priority.values.astype(int).tolist(),
+            rowLabels=matrix_priority.index.astype(str).tolist(),
+            colLabels=matrix_priority.columns.astype(str).tolist(),
+            loc='center',
+            cellLoc='center'
+        )
+        plt.tight_layout()
+        plt.show()
+
+    #---Table for Severity and Status---#
+    matrix_severity = pd.crosstab(df['SeverityName'], df['IncidentStatusName'])
+    if not matrix_severity.empty:
+        fig, ax = plt.subplots(figsize=(8, 4))
+        fig.suptitle(f'{phase_name}: Incident Severity vs. Status')
+        ax.axis('off')
+        ax.table(
+            cellText=matrix_severity.values.astype(int).tolist(),
+            rowLabels=matrix_severity.index.astype(str).tolist(),
+            colLabels=matrix_severity.columns.astype(str).tolist(),
+            loc='center',
+            cellLoc='center'
+        )
+        plt.tight_layout()
+        plt.show()
+
+    #---Table for Owner and Status---#
+    matrix_owner = pd.crosstab(df['OwnerName'], df['IncidentStatusName'], dropna=False)
+    if not matrix_owner.empty:
+        fig, ax = plt.subplots(figsize=(10, 5))
+        fig.suptitle(f'{phase_name}: Incident Owner vs. Status')
+        ax.axis('off')
+        ax.table(
+            cellText=matrix_owner.values.astype(int).tolist(),
+            rowLabels=matrix_owner.index.astype(str).tolist(),
+            colLabels=matrix_owner.columns.astype(str).tolist(),
+            loc='center',
+            cellLoc='center'
+        )
+        plt.tight_layout()
+        plt.show()
+
+    #---- Root Cause Pie----#
+    root_cause = df['Root Cause'].value_counts().sort_values(ascending=False)
+    if not root_cause.empty:
+        fig, ax = plt.subplots()
+        ax.pie(root_cause, autopct='%1.1f%%', startangle=90, labels=root_cause.index.astype(str).tolist())
+        ax.set_title(f'{phase_name}: Root Cause Analysis')
+        plt.show()
 
 
-#-----Priority by Bar-----#
-priority = defect_df['PriorityName'].value_counts().sort_values(ascending=False)
-fig, ax = plt.subplots()
-ax.bar(x=priority.index, height=priority.values.astype(int).tolist(), color='skyblue')
-ax.set_title('Incident Priority Bar')
-plt.show()
-
-
-#---Table for Priority and Status
-# 1. Get your basic summary counts
-matrix = pd.crosstab(defect_df['PriorityName'], defect_df['IncidentStatusName'])
-# 2. Open a blank plot sheet
-fig, ax = plt.subplots()
-ax.set_title('Incident Priority By Status')
-ax.axis('off') # Hide the empty graph lines behind the table
-# 3. Create the basic table
-ax.table(
-    cellText=matrix.values.astype(int).tolist(), 
-    rowLabels=matrix.index.astype(str).tolist(), 
-    colLabels=matrix.columns.astype(str).tolist(), 
-    loc='center'
-)
-plt.show()
-
-#---Table for Severity and Status
-# 1. Get your basic summary counts
-matrix = pd.crosstab(defect_df['SeverityName'], defect_df['IncidentStatusName'])
-
-# 2. Open a blank plot sheet
-fig, ax = plt.subplots()
-ax.set_title('Incident Severity By Status')
-
-ax.axis('off') # Hide the empty graph lines behind the table
-# 3. Create the basic table
-ax.table(
-    cellText=matrix.values.astype(int).tolist(), 
-    rowLabels=matrix.index.astype(str).tolist(), 
-    colLabels=matrix.columns.astype(str).tolist(), 
-    loc='center'
-)
-plt.show()
-
-
-#---Table for Owner and Status
-# 1. Get your basic summary counts
-matrix = pd.crosstab(defect_df['OwnerName'], defect_df['IncidentStatusName'],dropna=False)
-
-# 2. Open a blank plot sheet
-fig, ax = plt.subplots()
-ax.set_title('Incident Owner By Priority')
-
-ax.axis('off') # Hide the empty graph lines behind the table
-# 3. Create the basic table
-ax.table(
-    cellText=matrix.values.astype(int).tolist(), 
-    rowLabels=matrix.index.astype(str).tolist(), 
-    colLabels=matrix.columns.astype(str).tolist(),
-    loc='center'
-)
-plt.show()
-
-#---- Root Cause Pie----#
-fig, ax = plt.subplots()
-root_cause = defect_df['Root Cause'].value_counts().sort_values(ascending=False)
-ax.pie(root_cause,  autopct='%1.1f%%', startangle=90, labels=root_cause.index.astype(str).tolist())
-ax.set_title('Root Cause')
-plt.show()
-
-#-----Phase  Bar-----#
+# --- OVERALL CHART: Defects Per Phase ---
+# This chart remains to give a high-level overview before the breakdown.
 phase = defect_df['Test Phase'].value_counts().sort_values(ascending=False)
 fig, ax = plt.subplots()
 ax.bar(x=phase.index, height=phase.values.astype(int).tolist(), color='skyblue')
 ax.set_title('Defects Per Phase')
 plt.show()
 
+# --- Generate Charts for Each Phase ---
+sit_df = defect_df[defect_df['Test Phase'] == 'SIT'].copy()
+uat_df = defect_df[defect_df['Test Phase'] == 'UAT'].copy()
 
-
-
-
+generate_incident_charts(sit_df, 'SIT')
+generate_incident_charts(uat_df, 'UAT')
