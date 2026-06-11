@@ -29,7 +29,6 @@ for folder in res:
     folder_details.append(details)
     
 
-
 def clean_df(df):
     df.drop(list(df.filter(regex='Unnamed:')), axis=1, inplace=True)
     df.drop(list(df.filter(regex='CUS-')), axis=1, inplace=True)

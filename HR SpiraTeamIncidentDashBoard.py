@@ -29,13 +29,11 @@ root_cause_map = {
     4050:'Software Defect',
     4056:'Test',
     4057:'Unknown'
-    # Add any extra IDs your team encounters here
 }
 
 test_phase_map = {
     4072: 'SIT',
     4073: 'UAT',
-    # Add any extra IDs your team encounters here
 }
 
 all_incidents = requests.get(f"{base_url}/projects/{project_id}/incidents", headers=headers)

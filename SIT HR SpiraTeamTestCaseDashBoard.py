@@ -16,7 +16,7 @@ headers = json.loads(os.getenv("STD_HEADERS", "{}"))
 headers["username"]=username
 headers["api-key"]=api_key
 author_id=os.getenv("AUTHOR_ID")
-release_id=os.getenv("UAT_RELEASE")
+release_id=os.getenv("SIT_RELEASE")
 
 all_test_cases = requests.get(f"{base_url}/projects/{project_id}/test-cases?starting_row={1}&number_of_rows={999}&sort_field={"TestCaseId"}&sort_direction={"ASC"}&release_id={release_id}", headers=headers)
 res = all_test_cases.json()
