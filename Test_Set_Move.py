@@ -99,7 +99,7 @@ for test in all_tc:
             #Add it to the mapped test case by owner dictionairy 
             mapped_cases_by_owner[owner_key] = set()
         else:
-            print(f"Error creating test set for {owner_name}")
+            print(f"Error creating test set for {owner_key}")
             continue
     #Getting the target set id from the lookup dictionair 
     target_set_id = test_set_lookup[owner_key]
@@ -107,17 +107,17 @@ for test in all_tc:
     #If the test case id is in the dictionairy of test case that has been mapped then skip
     if test_case_id in mapped_cases_by_owner[owner_key]:
         print(
-            f"Skipping: Test Case {test_case_id} is already in {owner_name}'s Test Set."
+            f"Skipping: Test Case {test_case_id} is already in {owner_key}'s Test Set."
         )
         continue
 
-    print(f"Mapping Test Case {test_case_id} to {owner_name}'s Test Set...")
+    print(f"Mapping Test Case {test_case_id} to {owner_key}'s Test Set...")
     
 
     # Use list of dictionairy comprehension to bulk make arrays and then hit the map end point
     mapping_payload = [{"TestSetId": target_set_id, "TestCaseId": test_case_id}]
 
-    map_res = requests.post(f"{base_url}/projects/{project_id}/test-sets/{target_set_id}/test-case-mapping/{test_case_id}?owner_id={ownerid}&existing_test_set_test_case_id={target_set_id}",
+    map_res = requests.post(f"{base_url}/projects/{project_id}/test-sets/{target_set_id}/test-case-mapping/{test_case_id}?owner_id={ownerid}&existing_test_set_test_case_id=",
         headers=headers,
         
     )

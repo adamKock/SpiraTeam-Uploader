@@ -93,11 +93,8 @@ plt.show()
 all_folders = requests.get(f"{base_url}/projects/{project_id}/test-folders", headers=headers).json()
 folder_map = {f["Name"].strip().lower(): f["TestCaseFolderId"] for f in all_folders}
 
-folders_names_to_keep =["IMT", "Service Desk", "Cyber", "Career Explorer", "Case Management", "Compensation", "Absence", "Change of Contract", 
-                  "Employee Self Service", "Holiday", "Letter Management", "Manage Employees", "Manage Leavers", "Overtime", "Position Management",
-                    "Pay Inputs", "System","Organisation Structure", "Document Management", "Forms & Workflows", "Jobs & Job Assignments", "Letter Management", 
-                    "Manage System Lists", "Managing Attendance", "Policies", "Security", "Onboarding", "Payroll", "Performance", "Recruitment", "Reporting", "Finance Reports",
-                      "Succession", "Worksuite", "Payroll Deductions","Payroll Earnings"]
+#####Need to insert SIT Folder Names
+folders_names_to_keep =[""]
 
 folders_to_keep = {name: folder_map[name.lower()] for name in folders_names_to_keep if name.lower() in folder_map}
 
