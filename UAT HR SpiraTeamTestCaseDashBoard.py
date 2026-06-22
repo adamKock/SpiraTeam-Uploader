@@ -22,22 +22,39 @@ all_test_cases = requests.get(f"{base_url}/projects/{project_id}/test-cases?star
 res = all_test_cases.json()
 test_df = pd.DataFrame(res)
 
-# VISUALIZATION 1: Test Case Execution Status Distribution (Pie Chart)
+# VISUALIZATION 1: Test Case Execution Status Distribution (Clean Legend Fix)
 # =========================================================================
-fig, ax = plt.subplots(figsize=(6, 4))
+fig, ax = plt.subplots(figsize=(7, 4))
 status_counts = test_df['ExecutionStatusName'].value_counts().sort_values(ascending=False)
+total_tests = status_counts.sum()
 
+# 1. Generate clean text strings combining Name + Percent + Count for the legend
+legend_labels = []
+for status, count in status_counts.items():
+    percentage = (count / total_tests) * 100
+    legend_labels.append(f"{status}: {count} ({percentage:.1f}%)")
+
+# 2. Draw the pie chart WITHOUT text inside the slices (removes all overlapping strings)
 ax.pie(
-    status_counts.values.astype(int).tolist(), 
-    labels=status_counts.index.astype(str).tolist(), 
-    autopct='%1.1f%%', 
+    status_counts.values.astype(int).tolist(),  
+    labels=None, 
+    autopct=None, # 🌟 Removes the overlapping inner numbers entirely
     startangle=90, 
-    colors=['#4CAF50', '#FF9800', '#F44336', '#9E9E9E'] # Standard Pass, Not Run, Fail, Blocked colors
+    colors=['#4CAF50', '#FF9800', '#F44336', '#9E9E9E'][:len(status_counts)]
 )
-ax.set_title('Test Case Execution Metrics Summary', fontsize=12, fontweight='bold', pad=15)
+
+# 3. Add the legend containing all text, counts, and percentages safely on the side
+ax.legend(
+    labels=legend_labels, 
+    title="Status Breakdown", 
+    loc="center left", 
+    bbox_to_anchor=(1, 0.5)
+)
+
+ax.set_title('Test Case Execution Metrics Summary', fontsize=11, fontweight='bold', pad=10)
+
 plt.tight_layout()
 plt.show()
-
 # =========================================================================
 # VISUALIZATION 2: Test Case Assignment Status Matrix (Matplotlib Table)
 # =========================================================================
@@ -113,7 +130,7 @@ for fold in folders_to_keep:
     # Use a dictionary for query parameters for better readability and to avoid f-string issues.
     params = {
         "starting_row": 1,
-        "number_of_rows": 999,
+        "number_of_rows": 1200,
         "sort_field": "ExecutionStatus",
         "sort_direction": "ASC",
         "release_id": 452
