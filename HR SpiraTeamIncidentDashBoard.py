@@ -184,3 +184,5 @@ uat_df = defect_df[defect_df['Test Phase'] == 'UAT'].copy()
 
 generate_incident_charts(sit_df, 'SIT')
 generate_incident_charts(uat_df, 'UAT')
+
+

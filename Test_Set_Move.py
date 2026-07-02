@@ -31,12 +31,39 @@ headers["Content-Type"] = "application/json"
 all_users = requests.get(f"{base_url}/projects/{project_id}/users", headers=headers).json()
 user_map = {u["FullName"].strip().lower(): u["UserId"] for u in all_users}
 
+import requests
+
+# 1. Note the endpoint change: we use /test-cases/search
+search_url = f"{base_url}/projects/{project_id}/test-cases/search?starting_row=1&number_of_rows=1069"
+
+# 2. SpiraTeam expects an array of filter expressions in the POST body
+# This tells the server: "Only give me cases where OwnerId == target_owner_id"
+target_owner_id = 318 # Replace with your target owner's integer ID
+
+filter_payload = [
+    {
+        "PropertyName": "OwnerId",
+        "IntValue": target_owner_id
+    },
+    {
+        "PropertyName": "ReleaseId",
+        "IntValue": 452  # Keeps it restricted to your UAT release
+    }
+]
+
+# 3. Execute using requests.post instead of requests.get
+response = requests.post(search_url, json=filter_payload, headers=headers)
+owner_tc = response.json()
+
+# Now, 'owner_tc' ONLY contains the test cases for that specific owner.
+print(f"Server returned {len(owner_tc)} test cases for Owner ID {target_owner_id}")
+
 
 #get all the test cases in the UAT release
-all_tc = requests.get(f"{base_url}/projects/{project_id}/test-cases?starting_row=1&number_of_rows=99999&sort_field=&sort_direction=ASC&release_id=452", headers=headers).json()
+#all_tc = requests.get(f"{base_url}/projects/{project_id}/test-cases?starting_row=1&number_of_rows=1069&sort_field=OwnerId&sort_direction=ASC&release_id=452", headers=headers).json()
 
 #Get all the test sets apart of the release
-all_test_sets = requests.get(f"{base_url}/projects/{project_id}/test-sets?starting_row=1&number_of_rows=99999&sort_field=&sort_direction=ASC&release_id=452", headers=headers).json()
+all_test_sets = requests.get(f"{base_url}/projects/{project_id}/test-sets?starting_row=1&number_of_rows=50&sort_field=&sort_direction=ASC&release_id=452", headers=headers).json()
 
 # test_set_lookup will store: { "owner name": set_id }
 test_set_lookup = {}
@@ -61,7 +88,7 @@ for ts in all_test_sets:
     mapped_cases_by_owner[owner_key] = {c["TestCaseId"] for c in set_cases}
 
 #Loop through the test cases
-for test in all_tc:
+for test in owner_tc:
     #Assign some variables of the test case
     ownerid = test["OwnerId"]
     test_case_id = test["TestCaseId"]
