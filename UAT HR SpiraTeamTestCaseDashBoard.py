@@ -318,74 +318,116 @@ target_folders = ["IMT", "Service Desk", "Cyber", "Absence", "Change of Contract
                   "Policies", "Security", "System", "Payroll", "Reporting", "Finance Reports",
                   "Payroll Deductions","Payroll Earnings"]
 
-# Filter the master dataframe down to just your chosen scope
-if not test_cases.empty:
-    scoped_df = test_cases[test_cases['Folder'].isin(target_folders)]
-    print(scoped_df.head(5))
-    print(scoped_df.columns)
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from typing import Optional
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from typing import Optional
+
+# =========================================================================
+# 📊 1. CONFIGURATION & DATA PREPARATION
+# =========================================================================
+
+# Define target scope folders
+target_fold = ["Payroll Deductions", "Payroll Earnings"]
+
+# Filter the master dataframe down to target scope
+# (Replaced 'test_cases' with your loaded DataFrame if already fetched)
+if 'test_cases' in globals() and not test_cases.empty:
+    scoped_df = test_cases[test_cases['Folder'].isin(target_fold)].copy()
 else:
+    # Safe fallback structure if running standalone
     scoped_df = pd.DataFrame()
 
-# 2. Establish absolute timeline bounds (Match your UAT sprint window)
+# Establish UAT sprint window
 start_date = pd.to_datetime('2026-06-18').date()
 end_date = pd.to_datetime('2026-08-26').date()
 
+# Create uniform sequential date array
 date_range = pd.date_range(start=start_date, end=end_date).date
 total_days = len(date_range) - 1
 
-# 🌟 Scope total test cases down to just the selected folders
-total_test_cases = len(scoped_df) if not scoped_df.empty else 100
+# Total scope baseline test cases (e.g., 218)
+total_test_cases = len(scoped_df) if not scoped_df.empty else 218
 
-# 3. Calculate Scoped Ideal Remaining Vector (Mapped directly to the array length)
-ideal_remaining = [total_test_cases - (i * (total_test_cases / total_days)) for i in range(len(date_range))]
+# Calculate Ideal Remaining Vector (Linear descent to 0)
+ideal_remaining = [
+    total_test_cases - (i * (total_test_cases / total_days)) 
+    for i in range(len(date_range))
+]
 
-# 4. Calculate Scoped Live Actual Remaining Test Cases
-actual_remaining: list[Optional[int]] = [total_test_cases] * len(date_range)
+# Initialize Live Actual Remaining Test Cases vector with None
+actual_remaining: list[Optional[float]] = [None] * len(date_range)
+
+# =========================================================================
+# ⚙️ 2. CALCULATE LIVE ACTUAL REMAINING (STARTS AT 218)
+# =========================================================================
 
 if not scoped_df.empty and 'LastUpdateDate' in scoped_df.columns:
-    # Convert Spira timestamps to clean dates
-    completed_dates = pd.to_datetime(scoped_df['LastUpdateDate'], errors='coerce').dt.date
+    # Standardize Spira timestamps into clean Python date objects
+    scoped_df['CleanDate'] = pd.to_datetime(scoped_df['LastUpdateDate'], errors='coerce').dt.date
     
-    # Track only executed test configurations
-    is_executed = scoped_df['ExecutionStatusName'].isin(['Passed', 'Failed', 'Blocked'])
-    execution_days = completed_dates[is_executed].value_counts().sort_index()
-    
+    # Identify executed test cases (Passed, Failed, Blocked)
+    is_executed_mask = scoped_df['ExecutionStatusName'].isin(['Passed', 'Failed', 'Blocked'])
+    executed_df = scoped_df[is_executed_mask]
+
+    # 🌟 KEY FIX: Filter to ONLY include executions on or after the sprint start date
+    sprint_executions = executed_df[executed_df['CleanDate'] >= start_date]
+    execution_by_day = sprint_executions['CleanDate'].value_counts().sort_index()
+
+    # 🌟 KEY FIX: Start cumulative completed at 0 so Day 1 opens at full 218 baseline
     cumulative_completed = 0
-    current_date_today = pd.Timestamp.now().date() # Today's running baseline: June 24, 2026
-    
+    current_date_today = pd.Timestamp.now().date()
+
     for idx, current_day in enumerate(date_range):
-        if idx == 0:
-            continue
-        
-        # Pull completions recorded on this specific day
-        day_completions = execution_days.get(date_range[idx], 0)
+        # Accumulate tests completed on this specific calendar date
+        day_completions = execution_by_day.get(current_day, 0)
         cumulative_completed += day_completions
-        
-        # Prevent plotting zero out into the future 
-        if date_range[idx] <= current_date_today:
+
+        # Plot actual progress up to today's date; cut off line into the future
+        if current_day <= current_date_today:
             actual_remaining[idx] = max(0, total_test_cases - cumulative_completed)
         else:
             actual_remaining[idx] = None
 
 # =========================================================================
-# 📊 DRAW THE SCOPED BURNDOWN CHART
+# 🎨 3. DRAW THE BURNDOWN CHART
 # =========================================================================
-fig, ax = plt.subplots(figsize=(10, 5)) # Inched size up to 10 wide since timeline spans into August
+fig, ax = plt.subplots(figsize=(10, 5))
 
-# 🌟 FIX: Use the date_range array for X instead of days_axis
-ax.plot(date_range, ideal_remaining, label='Ideal Trendline', color='#9E9E9E', linestyle='--', linewidth=2)
+# Plot Ideal Linear Trendline
+ax.plot(
+    date_range, 
+    ideal_remaining, 
+    label='Ideal Trendline', 
+    color='#9E9E9E', 
+    linestyle='--', 
+    linewidth=2
+)
 
-# Filter for the non-future values to prevent chart line drop-off artifacts
+# Extract non-future values up to today
 valid_dates = [d for d, val in zip(date_range, actual_remaining) if val is not None]
 valid_values = [val for val in actual_remaining if val is not None]
 
-# 🌟 FIX: Use valid_dates array for X
-ax.plot(valid_dates, valid_values, 
-        label=f'Actual Remaining ({", ".join(target_folders)[:20]}...)', 
-        color='#E91E63', marker='o', linewidth=2.5)
+# Plot Actual Remaining Progress Line
+folder_label = ", ".join(target_fold)[:25] + "..." if len(", ".join(target_fold)) > 25 else ", ".join(target_fold)
+ax.plot(
+    valid_dates, 
+    valid_values, 
+    label=f'Actual Remaining ({folder_label})', 
+    color='#E91E63', 
+    marker='o', 
+    linewidth=2.5
+)
 
-# Dynamic Custom Title reflecting the isolated scope
-folder_title_string = ", ".join(target_folders)
+# Dynamic Title Formatting
+folder_title_string = ", ".join(target_fold)
 if len(folder_title_string) > 40:
     folder_title_string = folder_title_string[:40] + "..."
 
@@ -393,17 +435,158 @@ ax.set_title(f'UAT Burndown Focus: {folder_title_string}', fontsize=12, fontweig
 ax.set_xlabel('Execution Timeline', fontsize=10, labelpad=8)
 ax.set_ylabel('Remaining Unexecuted Test Cases', fontsize=10, labelpad=8)
 
-# 🌟 FIX: Apply native datetime formatting mechanisms to handle the 2-month span cleanly
-import matplotlib.dates as mdates
+# X-Axis Date Formatting (Intervaled every 7 days to avoid crowding)
 ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %d'))
-
-# Because your timeline runs from June to August (~70 days), we interval the tick markers 
-# every 7 days so the text on the axis doesn't crowd and overlap
-ax.xaxis.set_major_locator(mdates.DayLocator(interval=7)) 
+ax.xaxis.set_major_locator(mdates.DayLocator(interval=7))
 fig.autofmt_xdate(rotation=30, ha='right')
 
-# 🌟 FIX: Change boundary limits to date limits
-ax.set_xlim(start_date, end_date)
+# Limits & Styling (using date2num to resolve Pylance/type-checker warnings)
+ax.set_xlim(float(mdates.date2num(start_date)), float(mdates.date2num(end_date)))
+ax.set_ylim(0, total_test_cases + (total_test_cases * 0.05 if total_test_cases > 0 else 5))
+ax.grid(True, linestyle=':', alpha=0.6)
+ax.legend(loc='upper right')
+
+plt.tight_layout()
+plt.show()
+
+import pandas as pd
+import requests
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from typing import Optional
+import pandas as pd
+import requests
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from typing import Optional
+
+# =========================================================================
+# 📡 1. FETCH ALL TEST CASES DIRECTLY BY RELEASE ID
+# =========================================================================
+release_id = 452
+starting_row = 1
+number_of_rows = 1500
+
+url = (
+    f"{base_url}/projects/{project_id}/test-cases"
+    f"?starting_row={starting_row}"
+    f"&number_of_rows={number_of_rows}"
+    f"&sort_field=TestCaseId"
+    f"&sort_direction=ASC"
+    f"&release_id={release_id}"
+)
+
+print(f"📡 Fetching all test cases assigned to Release [{release_id}]...")
+response = requests.get(url, headers=headers, timeout=60)
+
+if response.status_code == 200:
+    raw_tc_data = response.json()
+    test_cases_df = pd.DataFrame(raw_tc_data)
+    print(f"✅ Successfully loaded {len(test_cases_df)} test cases for Release {release_id}.")
+else:
+    print(f"❌ Failed to fetch test cases. HTTP Status: {response.status_code}")
+    test_cases_df = pd.DataFrame()
+
+# =========================================================================
+# 📊 2. BUILD ACCURATE BURNDOWN CHART
+# =========================================================================
+start_date = pd.to_datetime('2026-06-18').date()
+end_date = pd.to_datetime('2026-08-26').date()
+
+date_range = pd.date_range(start=start_date, end=end_date).date
+total_days = len(date_range) - 1
+
+total_test_cases = len(test_cases_df) if not test_cases_df.empty else 1050
+
+# Ideal vector
+ideal_remaining = [
+    total_test_cases - (i * (total_test_cases / total_days)) 
+    for i in range(len(date_range))
+]
+
+actual_remaining: list[Optional[float]] = [None] * len(date_range)
+
+if not test_cases_df.empty:
+    # 🌟 FIX 1: Use 'ExecutionDate' first, fall back to 'LastUpdateDate' if missing
+    if 'ExecutionDate' in test_cases_df.columns:
+        test_cases_df['RawDate'] = test_cases_df['ExecutionDate'].fillna(test_cases_df.get('LastUpdateDate'))
+    else:
+        test_cases_df['RawDate'] = test_cases_df.get('LastUpdateDate')
+
+    test_cases_df['CleanDate'] = pd.to_datetime(test_cases_df['RawDate'], errors='coerce').dt.date
+
+    # Filter executed cases (Passed, Failed, Blocked)
+    is_executed_mask = test_cases_df['ExecutionStatusName']=="Passed"
+
+    #is_executed_mask = test_cases_df['ExecutionStatusName'].isin(['Passed', 'Failed', 'Blocked'])
+    executed_df = test_cases_df[is_executed_mask]
+
+    # Print debug info to console to verify execution count matches Spira
+    print(f"📊 Debug Verification: Total Executed Cases Found = {len(executed_df)}")
+
+    # 🌟 FIX 2: Group executions by date, treating pre-sprint or missing dates as Day 1 (Jun 18)
+    pre_sprint_count = 0
+    sprint_executions = {}
+
+    for _, row in executed_df.iterrows():
+        exec_date = row['CleanDate']
+        # If executed before start_date or missing date, credit it to start_date
+        if pd.isna(exec_date) or exec_date <= start_date:
+            pre_sprint_count += 1
+        else:
+            sprint_executions[exec_date] = sprint_executions.get(exec_date, 0) + 1
+
+    cumulative_completed = 0
+    current_date_today = pd.Timestamp.now().date()
+
+    for idx, current_day in enumerate(date_range):
+        if current_day == start_date:
+            # Include all pre-sprint / opening day completions on Day 1
+            day_completions = pre_sprint_count
+        else:
+            day_completions = sprint_executions.get(current_day, 0)
+
+        cumulative_completed += day_completions
+
+        if current_day <= current_date_today:
+            actual_remaining[idx] = max(0, total_test_cases - cumulative_completed)
+        else:
+            actual_remaining[idx] = None
+
+# =========================================================================
+# 🎨 3. DRAW THE CHART
+# =========================================================================
+fig, ax = plt.subplots(figsize=(10, 5))
+
+# Plot Ideal Line
+ax.plot(date_range, ideal_remaining, label='Ideal Trendline', color='#9E9E9E', linestyle='--', linewidth=2)
+
+# Extract non-future values up to today
+valid_dates = [d for d, val in zip(date_range, actual_remaining) if val is not None]
+valid_values = [val for val in actual_remaining if val is not None]
+
+# Plot Actual Progress
+ax.plot(
+    valid_dates, 
+    valid_values, 
+    label=f'Actual Remaining ({int(valid_values[-1]) if valid_values else total_test_cases} left)', 
+    color='#2196F3', 
+    marker='o', 
+    linewidth=2.5
+)
+
+# Formatting
+ax.set_title(f'UAT Release {release_id} Total Burndown ({total_test_cases} Test Cases)', fontsize=12, fontweight='bold', pad=15)
+ax.set_xlabel('Execution Timeline', fontsize=10, labelpad=8)
+ax.set_ylabel('Remaining Unexecuted Test Cases', fontsize=10, labelpad=8)
+
+# Date formatting on X-axis (7-day intervals)
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %d'))
+ax.xaxis.set_major_locator(mdates.DayLocator(interval=7))
+fig.autofmt_xdate(rotation=30, ha='right')
+
+# Axis limits
+ax.set_xlim(float(mdates.date2num(start_date)), float(mdates.date2num(end_date)))
 ax.set_ylim(0, total_test_cases + (total_test_cases * 0.05 if total_test_cases > 0 else 5))
 ax.grid(True, linestyle=':', alpha=0.6)
 ax.legend(loc='upper right')

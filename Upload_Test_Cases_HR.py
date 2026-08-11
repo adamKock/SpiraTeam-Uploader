@@ -109,7 +109,7 @@ for index, row in df.iterrows():
             "TestCaseStatusName":"Ready for Test"
         }
         
-        response = requests.post(f"{base_url}/projects/{project_id}/test-cases", json=test_case_payload, headers=headers)
+        response = requests.post(f"{base_url}/projects/{project_id}/test-cases", json=test_case_payload, headers=headers,timeout=30)
         
         if response.status_code in [200, 201, 202]:
             case_id = response.json()["TestCaseId"]
