@@ -241,7 +241,7 @@ total_test_cases = len(test_cases) if not test_cases.empty else 100
 ideal_remaining = [total_test_cases - (i * (total_test_cases / total_days)) for i in range(len(date_range))]
 
 # 3. Calculate Live Actual Remaining Test Cases
-actual_remaining: list[Optional[int]] = [total_test_cases] * len(date_range)
+actual_remaining_burndown: list[Optional[int]] = [total_test_cases] * len(date_range)
 
 if not test_cases.empty and 'LastUpdateDate' in test_cases.columns:
     # Convert Spira dates to uniform Datetime stamps, ignoring timezone off-sets
@@ -265,9 +265,9 @@ if not test_cases.empty and 'LastUpdateDate' in test_cases.columns:
         
         # Don't plot data points for future dates that haven't occurred yet
         if date_range[idx] <= current_date_today:
-            actual_remaining[idx] = max(0, total_test_cases - cumulative_completed)
+            actual_remaining_burndown[idx] = max(0, total_test_cases - cumulative_completed)
         else:
-            actual_remaining[idx] = None # Cuts line display cleanly at current date boundary
+            actual_remaining_burndown[idx] = None # Cuts line display cleanly at current date boundary
 
 # =========================================================================
 # 📊 DRAW THE LIVE BURNDOWN CHART
@@ -278,8 +278,8 @@ fig, ax = plt.subplots(figsize=(10, 5)) # Using 10 wide to give the 2-month span
 ax.plot(date_range, ideal_remaining, label='Ideal Burndown Trend', color='#9E9E9E', linestyle='--', linewidth=2)
 
 # Extract only valid data points up to today's date
-valid_dates = [d for d, val in zip(date_range, actual_remaining) if val is not None]
-valid_values = [val for val in actual_remaining if val is not None]
+valid_dates = [d for d, val in zip(date_range, actual_remaining_burndown) if val is not None]
+valid_values = [val for val in actual_remaining_burndown if val is not None]
 
 # 🌟 FIX: Plot actual progress cleanly against the identical date tracking points
 ax.plot(valid_dates, valid_values, label='Actual Remaining Tests', color='#2196F3', marker='o', linewidth=2.5)
@@ -298,7 +298,8 @@ ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %d'))
 ax.xaxis.set_major_locator(mdates.DayLocator(interval=7)) 
 fig.autofmt_xdate(rotation=30, ha='right')
 # 🌟 FIX: Boundary limits must be raw date bounds instead of numeric index limits
-ax.set_xlim(start_date1, end_date1)
+#ax.set_xlim(start_date1, end_date1)
+ax.set_xlim(float(mdates.date2num(start_date1)), float(mdates.date2num(end_date1)))
 ax.set_ylim(0, total_test_cases + (total_test_cases * 0.05 if total_test_cases > 0 else 5)) # Dynamic 5% top buffer padding
 ax.grid(True, linestyle=':', alpha=0.6)
 ax.legend(loc='upper right')

@@ -17,7 +17,7 @@ headers["username"] = username
 headers["api-key"] = api_key
 headers["project-id"] = project_id
 
-filepath = "Coreforupload.csv"
+filepath = "UAT - Compensation.csv"
 test_case_ids = []
 spira_id_tracker = {}  # Maps CSV 'Ref' -> Spira 'TestCaseId'
 pending_prereqs = []   # Tracks test cases requiring a post-upload description update

@@ -38,7 +38,7 @@ search_url = f"{base_url}/projects/{project_id}/test-cases/search?starting_row=1
 
 # 2. SpiraTeam expects an array of filter expressions in the POST body
 # This tells the server: "Only give me cases where OwnerId == target_owner_id"
-target_owner_id = 318 # Replace with your target owner's integer ID
+target_owner_id = 493 # Replace with your target owner's integer ID
 
 filter_payload = [
     {
