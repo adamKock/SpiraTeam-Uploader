@@ -492,7 +492,7 @@ else:
 # 📊 2. BUILD ACCURATE BURNDOWN CHART
 # =========================================================================
 start_date = pd.to_datetime('2026-06-18').date()
-end_date = pd.to_datetime('2026-08-26').date()
+end_date = pd.to_datetime('2026-09-07').date()
 
 date_range = pd.date_range(start=start_date, end=end_date).date
 total_days = len(date_range) - 1

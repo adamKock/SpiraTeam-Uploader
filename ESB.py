@@ -28,22 +28,26 @@ session.headers.update(headers)
 #Create the test case and steps 
 
 
-df = pd.read_csv("WM IS AccessRoles TestCases.csv")
+#df = pd.read_csv("WM IS AccessRoles TestCases.csv")
+
+df = pd.read_csv("INT073.csv")
 
 case_id = None
 for index, row in df.iterrows():
+    #print(df.columns)
 
     id = str(row.get("Test Case ID",""))
-    test_case_name = str(row.get("Test Case Name",""))
-    role = str(row.get("Role",""))
+    test_case_name = str(row.get("TestCase Name",""))
+    #role = str(row.get("Role",""))
     module = str(row.get("Module",""))
     priority = str(row.get("Priority",""))
     scope = str(row.get("Scope",""))
-    comments = str(row.get("Comments",""))
+    comments = str(row.get("Comment",""))
     pre_conditions = str(row.get("Pre-conditions",""))
     test_data =  str(row.get("Test Data",""))
     steps =  str(row.get("Test Steps",""))
     expected_result=  str(row.get("Expected Results",""))
+    fields = str(row.get("Fields",""))
 
     #TC Name to concat id and name 
     #Then in description need to concat 
@@ -53,8 +57,8 @@ for index, row in df.iterrows():
     #Comments
 
     tc_full_name = id + test_case_name
-    combined_description = f"""**Role / User:** {role}
-    **Module:** {module}**Scope:** {scope}**Comments:**{comments}"""
+    combined_description = f"""
+    **Module:** {module} **Fields** {fields} **Scope:** {scope} **Comment** {comments}"""
 
     #32 = Low 
     #31 Medium 
@@ -71,7 +75,6 @@ for index, row in df.iterrows():
     }
 
     p = p_map.get(priority)
-    print(p)
     
     
 
@@ -79,8 +82,8 @@ for index, row in df.iterrows():
                 "Name": tc_full_name,
                 "Description": str(combined_description),
                 "ProjectID": str(project_id),
-                #"TestCaseFolderID": folder_id,
-                "AuthorID": int(author_id) if author_id else None,
+                "TestCaseFolderID": 9937,
+                "AuthorID": 290,
                 "TestCaseStatusId": 5,
                 "TestCaseStatusName": "Ready for Test",
                 "TestCasePriorityId":p
